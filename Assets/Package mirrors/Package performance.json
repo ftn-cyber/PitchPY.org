@@ -1,0 +1,49 @@
+{
+  "$schema": "https://pitchpy.dev/schema/pitch.perf.json",
+  "name": "@pitch/my-perf-app",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Proyek yang dikelola Pitch Performance Manager (download paralel + cache global)",
+  "license": "MIT",
+  "packageManager": "pitch-perf@1.0.0",
+
+  "main": "main.py",
+  "scripts": {
+    "start": "python main.py",
+    "dev": "pitch watch main.py --reload",
+    "test": "python -m pytest -q",
+    "lint": "ruff check .",
+    "install:fast": "pitch --pm perf install",
+    "install:lean": "pitch --pm perf install --production --no-optional"
+  },
+
+  "dependencies": {
+    "requests": "^2.31.0",
+    "fastapi": "^0.110.0",
+    "uvicorn": "^0.29.0",
+    "orjson": "^3.10.0"
+  },
+  "devDependencies": {
+    "pytest": "^8.0.0",
+    "ruff": "^0.4.0"
+  },
+  "optionalDependencies": {
+    "uvloop": "^0.19.0",
+    "httptools": "^0.6.0"
+  },
+  "resolutions": {
+    "urllib3": "2.2.1"
+  },
+
+  "perf": {
+    "registry": "",
+    "jobs": "auto",
+    "cacheFolder": "~/.pitch/cache/perf",
+    "useFallback": true
+  },
+
+  "workspaces": ["packages/*"],
+  "engines": { "python": ">=3.9", "pitch": ">=0.1.0" },
+  "os": ["windows", "linux", "macos", "android"],
+  "files": ["main.py", "src/", "README.md"]
+}
