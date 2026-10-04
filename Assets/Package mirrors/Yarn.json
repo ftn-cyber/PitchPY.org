@@ -1,1 +1,45 @@
+{
+  "$schema": "https://pitchpy.dev/schema/pitch.yarn.json",
+  "name": "@pitch/my-yarn-app",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Proyek yang dikelola Pitch Yarn (versi dikunci lewat lockfile)",
+  "license": "MIT",
+  "packageManager": "pitch-yarn@1.0.0",
+
+  "main": "main.py",
+  "scripts": {
+    "start": "python main.py",
+    "dev": "pitch watch main.py --reload",
+    "test": "python -m pytest -q",
+    "install:ci": "pitch --pm yarn install --frozen-lockfile",
+    "install:offline": "pitch --pm yarn install --offline"
+  },
+
+  "dependencies": {
+    "requests": "^2.31.0",
+    "fastapi": "^0.110.0"
+  },
+  "devDependencies": {
+    "pytest": "^8.0.0"
+  },
+
+  "resolutions": {
+    "urllib3": "2.2.1"
+  },
+
+  "workspaces": ["packages/*"],
+
+  "yarn": {
+    "registry": "",
+    "lockfile": "pitch.yarn.lock",
+    "cacheFolder": "~/.pitch/cache/yarn",
+    "frozenLockfile": false,
+    "offline": false
+  },
+
+  "engines": { "python": ">=3.9", "pitch": ">=0.1.0" },
+  "os": ["windows", "linux", "macos"],
+  "files": ["main.py", "src/", "README.md"]
+}
 
