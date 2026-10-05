@@ -1,0 +1,117 @@
+{
+  "$schema": "https://pitchpy.dev/schema/pitch.json",
+  "name": "@pitch/my-app",
+  "version": "1.0.0",
+  "description": "Aplikasi overpower di atas pitch.py",
+  "private": false,
+  "license": "MIT",
+  "author": { "name": "", "email": "", "url": "" },
+  "keywords": ["pitch", "python", "runtime", "remote"],
+  "repository": { "type": "git", "url": "" },
+
+  "main": "main.py",
+  "bin": { "myapp": "cli.py" },
+  "exports": {
+    ".": "./main.py",
+    "./utils": "./src/utils.py"
+  },
+  "type": "script",
+
+  "engines": { "python": ">=3.9", "pitch": ">=0.1.0" },
+  "os": ["windows", "linux", "macos", "android", "termux"],
+  "cpu": ["x64", "arm64"],
+
+  "scripts": {
+    "start": "python main.py",
+    "dev": "pitch watch main.py --reload",
+    "test": "python -m pytest -q",
+    "lint": "ruff check .",
+    "build": "pitch bundle main.py --out dist/app.pitch",
+    "deploy": "pitch remote push --target production",
+    "preinstall": "pitch doctor",
+    "postinstall": "python scripts/setup.py",
+    "prestart": "pitch check"
+  },
+
+  "dependencies": {
+    "requests": "^2.31.0",
+    "fastapi": "^0.110.0",
+    "uvicorn": "^0.29.0"
+  },
+  "devDependencies": {
+    "pytest": "^8.0.0",
+    "ruff": "^0.4.0"
+  },
+  "optionalDependencies": { "uvloop": "^0.19.0" },
+  "peerDependencies": {},
+  "overrides": {},
+  "resolutions": {},
+
+  "workspaces": ["packages/*", "apps/*"],
+
+  "runtime": {
+    "isolation": "venv",
+    "autoVenv": true,
+    "pythonVersion": "3.12",
+    "parallel": true,
+    "workers": "auto",
+    "hotReload": true,
+    "cache": { "enabled": true, "dir": ".pitch/cache", "ttl": "7d" },
+    "memoryLimit": "512MB",
+    "timeout": "30s"
+  },
+
+  "remote": {
+    "enabled": true,
+    "description": "Jalankan kode Python di luar server asal",
+    "targets": {
+      "production": { "host": "node1.example.com", "port": 7000, "token": "${PITCH_TOKEN}" },
+      "staging": { "host": "node2.example.com", "port": 7000, "token": "${PITCH_TOKEN}" }
+    },
+    "transport": "websocket",
+    "encrypt": true,
+    "autoReconnect": true,
+    "syncOnSave": true
+  },
+
+  "sandbox": {
+    "enabled": true,
+    "permissions": {
+      "network": ["api.example.com"],
+      "fs": { "read": ["./data"], "write": ["./out"] },
+      "env": ["PITCH_TOKEN"],
+      "subprocess": false
+    }
+  },
+
+  "env": {
+    "default": { "APP_ENV": "development" },
+    "production": { "APP_ENV": "production" },
+    "file": [".env", ".env.local"]
+  },
+
+  "tasks": {
+    "all": ["lint", "test", "build"],
+    "ci": { "run": ["lint", "test"], "parallel": true }
+  },
+
+  "hooks": {
+    "onInstall": "scripts/on_install.py",
+    "onError": "scripts/on_error.py",
+    "onExit": "scripts/on_exit.py"
+  },
+
+  "plugins": ["@pitch/plugin-typing", "@pitch/plugin-profiler"],
+  "aliases": { "@": "./src", "@utils": "./src/utils" },
+
+  "registry": {
+    "default": "https://registry.pitchpy.dev",
+    "scopes": { "@pitch": "https://registry.pitchpy.dev" },
+    "fallback": "https://pypi.org/simple"
+  },
+
+  "lockfile": "pitch.lock",
+  "files": ["main.py", "src/", "README.md"],
+  "ignore": ["__pycache__", ".venv", ".pitch/cache", "*.pyc"],
+  "publishConfig": { "access": "public", "tag": "latest" }
+}
